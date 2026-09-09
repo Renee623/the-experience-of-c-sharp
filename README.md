@@ -2288,3 +2288,416 @@ UML同一建模语言
 最少知识原则，一个对象应该对其他对象尽可能少的了解
 一个对象中的成员，要尽可能少的直接和其他类建立关系
 ----------------------------------------------------------------------------进阶
+## 简单数据结构(集合类，就是容器，只不过其存储规则不同)
+### ArrayList
+#### ArrayList的本质
+是一个object类型的数组
+帮助我们实现很多方法，比如数组的增删查改
+#### 声明
+==`需要引用命名空间System.Collection`==
+`using System.Collection;`
+`ArrayList array = new ArrayList();`
+#### 增删查改(F12右键看看)
+**增**
+`array.Add(1);`
+`array.Add("123");`
+`array.Add(true);`
+`array.Add(new object());`
+**批量增**
+`ArrayList array2 = new ArrayList();`
+`array2.Add(123);`
+`array.AddRange(array2);//相当于拼接的感觉`
+**插入**
+`array.Insert(1,123456);//第一个指定位置，第二个插入内容`
+**删**
+*移除指定内容*
+`array.Remove(1);//删除指定内容1，且删第一个`
+*移除指定位置的元素*
+`array.RemoveAt(2);`
+*清空*
+`array.Clear();`
+**查**
+`Console.WriteLine(array[0]);`
+*查看元素是否存在*
+`if(array.Contains("123")){
+
+		Console.WriteLine("存在");
+`}`
+*正向查看元素位置*
+==找到返回位置，找不到返回-1==
+`int idx = array.IndexOf(1);`
+*反向查看元素位置*
+`int lIdex = array.LastIndextOf(1);`
+**改**
+`array[0] = 999;`
+#### 遍历
+**通过点Count得到长度**,(==但数组会扩容故其有一个长度和容量的关系==)
+*长度*
+`int l = array.Count`
+*容量*
+`int c = array.Capacity;`
+`for(int i = 0 ; i < l;i++){
+
+		Console.WriteLine(array[i]);
+`}`
+==还有迭代器遍历==
+*数组里每一个元素都取出来*
+`foreach(var item in array){
+
+		Console.WriteLine(item);
+`}`
+#### 装箱拆箱
+`其为万物之父类型，故存在装箱拆箱，故ArrayList少用`
+`int i = 1;`
+`array[0] = 1;`
+`i = (int)array[0];`
+### Stack(只能压和弹)
+#### 本质
+``一个已经封装好的类，是一个object[]数组
+特殊的存储规则
+*是栈存储容器，栈是一种先进后出的数据结构==先存入的数据后获取，后存入的数据先获取==，单通道容器，只能从顶上拿东西*
+#### 声明
+`要引用空间System.Collections`
+`using System.Collections;
+`Stack stack = new Stack();`
+#### 增删查改
+**增**
+压栈，把东西压进去，类似旅行箱,*可以放任意类型包括类*
+`stack.Push(1);
+`stack.Push("123");`
+`stack.Push(new Test());`
+**取**`栈不提供删除的方法`
+`遵循先进后出`
+`object v = stack.Pop();//得到最后放进去的东西`
+`Console.WriteLine(v);`
+**查**
+`1.栈无法查看指定位置的元素，只能查看栈顶的内容`
+`v = stack.Peek();//只是看一看没有弹出来`
+`Console.WriteLine(v);`
+
+`2.查看元素是否在栈中`
+`if(stack.Contains(1.2f)){
+
+			Console.WriteLine("存在");
+`}`
+**改**
+**无法改变其中元素，只能清空之后再压东西**
+`stack.Clear();`
+#### 遍历
+**`1.长度`**
+`stack.Count;`
+**`2.foreach遍历 栈没法用索引器，所以不能用for遍历`**
+`foreach(object item in stack){
+
+			Console.WriteLine(item);//从栈顶开始打
+`}`
+**`3.另一种遍历 把栈转为数组`**
+`object[]array = stack.ToArray();`
+`for(int i = 0;i < array.Length;i++){
+
+			Console.WriteLine(array[i]);//从栈顶开始打
+`}`
+**`4.循环弹栈`**
+`while(stack.Count > 0){
+
+			object o = stack.Pop()
+			Console.WriteLine(o);
+`}`
+`Console.WriteLine(stack.Count); // 为0`
+#### 装箱拆箱
+*是万物之父来存储数据，进行值存储时装箱，将值对象拿出来时是拆箱*
+### Queue(队列)
+#### 队列的本质
+是一个object数组，特殊的封装规则
+**先进先出，先存入的先获取，后存入的后获取，类似一个管子，只是开口方向不同**
+#### 声明
+`Queue queue = new Queue();`
+#### 增取查改
+**增**
+`queue.Enqueue(1);`
+`queue.Enqueue("123");`
+`queue.Enqueue(new Test());`
+**取**
+*不存在删除*
+`object v = queue.Dequeue();`
+`Console.WriteLine(v);//得到1`
+**查**
+**`1.查看队列头部元素，但只是看一看`**
+`v = queue.Peek();`
+**`2.查看是否存在`**
+`if(queue.Contains(1.2f)){
+
+		Console.WriteLine("存在");
+`}`
+**改**
+**无法改变队列元素，只能进出队列,或清空**
+`queue.Clear();`
+#### 遍历
+**`1.长度`**
+`queue.Count;`
+**`2.foreach遍历`**
+`foreach(object item in queue){
+
+			Console.WriteLine(item);//先进先出
+`}`
+**`3.转为数组用for`**
+`object[]array = queue.ToArray();`
+`for(int i = 0;i < array.Length;i++){
+
+			Console.WriteLine(array[i]);//
+`}`
+**`4.循环出列`**
+`while(queue.Count > 0){
+
+
+		object v = queue.Dequeue();
+		Console.WriteLine(v);
+`}`
+#### 装箱拆箱
+### Hashtable(哈希表)
+#### 本质
+基于键的哈希代码组织起来的键值对，一一对应，用来提高数据查询的效率，==通过键访问元素==
+#### 声明
+`需要引用空间System.Collections`
+`Hashtable hashtable = new Hashtable();`
+#### 增删查改
+**增**
+==不能有相同键,值可以重复==
+`hashtable.Add(1,"123");//键和值都是object类型的`
+**删**
+**`1.只能通过键删除`**
+`hashtable.Remove(1);`
+**`2.删除没有的键没反应`**
+`hashtable.Remove(2);`
+**`3.可以清空`**
+`hashtable.Clear();`
+**查**
+==通过键找值，找不到返回空==
+**`1.找值`**
+`Console.WriteLine(hashtable[1]);`
+`Console.WriteLine(hashtable[3]);`
+**`2.查看是否存在`**
+`if(hashtable.Contains(1)){
+
+		Console.WriteLine("存在");
+`}`
+`if(hashtable.ContainsKey(2)){
+
+
+		Console.WriteLine("存在");
+`}`
+`if(hashtable.ContainsValue("123")){
+
+		Console.WriteLine("存在");
+`}`
+**改**
+==只能改键对应的值内容，无法修改键==
+`hashtable[1] = "234";`
+`Console.WriteLine(hashtable[1]);`
+#### 遍历
+`Console.WriteLine(hashtable.Count);//得到键值对对数`
+**`1.foreach遍历键`**
+`foreach(object item in hashtable.Keys){
+
+		Console.WriteLine(item);//得到键
+		Console.WriteLine(hashtable[item]);
+`}`
+**`2.foreach遍历值`**
+`foreach(object item in hashtable.Values){
+
+		Console.WriteLine(item);
+`}`
+**`3.键值对一起遍历`**
+`foreach(DictionaryEntry item in hashtable){
+
+			Console.WriteLine(item.Key + itme.Value);
+`}`
+**`4.迭代遍历法`**
+`IDictionaryenumerator myEnumerator = hashtable.GetEnumerator();`
+`bool flag = myEnumerator.MoveNext();`
+`while(flag){
+
+		Console.WriteLine(myEnumerator.Key + myEnumerator.Value);
+
+`}`
+#### 装箱拆箱
+## 泛型
+
+### 泛型
+#### 泛型是什么
+实现了类型参数化，实现代码重用目的，通过类型参数化来实现同一份代码上操作多种类型
+*相当于类型占位符，定义类或方法时使用替代符代表变量类型，当真正使用类或方法时再具体指定类型*
+#### 泛型分类
+==包括泛型类，泛型接口，泛型函数==
+基本语法：
+`class 类名<泛型占位（大写）字母>`
+`interface 接口名<泛型占位字母>`
+`函数名<泛型占位字母>(参数列表)`
+**占位字母可以有很多个**
+#### 泛型类和接口
+`class TestClass<T>{
+
+		public T value;//T不知道是什么类型，只有在真正用的时候才能确定
+`}`
+`class TestClass2<T1,T2,K,M,L>{
+
+
+		public T1 value1;
+		public T2 value2;
+		public K value;
+		public M value3;
+		public L value4;
+`}`
+`static void Main(string[]args){
+
+		TestClass<int> t = new TestClass<int>();//就是代表类里的value是int类型
+		t.value = 10;
+		TestClass<string> t2 = new TestClass<string>();
+		t2.value = "123";
+		TestClass2<int,string,char,bool,byte> = new TestClass2<int,string,char,bool,byte>();
+`}`
+`interface TestInterface<T>{
+
+		T Value{
+		
+				get;
+				set;
+		
+		}
+
+`}`
+`class Test:TestInterafce<int>{//继承的时候也要填写上
+
+		public int Value{get;set;}
+`}`
+
+#### 泛型方法
+**`1.普通类中的泛型方法`**
+`class Test2{
+
+		//做参数
+		public void TestFun<T>(T value){//这里必须传你这里的T类型参数
+				Console.WriteLine(value);
+		}
+		//做逻辑处理
+		public void TestFun<T>(){
+				T t = default(T);//得到对应类型默认值
+		}
+		//做返回值
+		public T TestFun<T>(string v){
+				return default(T);
+		}
+		//
+		public void TestFun<T,K,M>(T t,K k,M m){
+		
+		}
+`}`
+`Test2 tt = new Test2();
+`tt.TestFun<int>(123123);`
+**`2.泛型类中的泛型方法`**
+`class Test2<T>{//和上面的普通类不是一个
+
+			public T value;
+			public void TestFun(T t)//这里不是泛型函数
+			//泛型类中的泛型方法不能使用和类同名的替代符
+			public void TestFun<K>(K k){
+					Console.WriteLine(k);
+			}
+`}`
+`Test2<int> tt2 = new Test2<int>();`
+`tt2.TestFun<string>("123");//其实会根据后面的参数来判断类型即<>内可以不写`
+#### 泛型的作用
+*1.不同类型对象的相同逻辑可以选择泛型
+2.可以一定程度上避免装箱拆箱*
+### 泛型约束
+#### 什么是泛型约束
+让泛型的类型有一定限制
+`关键字 where`
+`1.值类型   where 泛型字母:struct`
+`2.引用类型 where 泛型字母:class
+`3.存在无参公共构造函数 where 泛型字母:new()
+`4.某个类本身或者派生类 where 泛型字母:类名
+`5.某个接口的派生类型 where 泛型字母:接口名
+`6.另一个泛型类型本身或者派生类型 where 泛型字母:另一个泛型字母
+==`在泛型声明之后where 泛型字母:(约束的类型)`==
+#### 各泛型约束讲解
+**值类型**
+`class Test<T>where T:struct{
+
+		public T value;
+		public void TestFun<K>()where K:struct{
+		
+		
+		}
+`}`
+`Test<int>t = new Test<int>();//这里只能填值类型`
+**引用类型**
+`class Test<T>where T:class{
+
+		public T value;
+		public void TestFun<K>(K k)where K:class{
+		
+		}
+
+`}`
+`Test<Random>t = new Test<Random>();`
+`t.TestFun(object);`
+**存在无参公共函数**
+`class Test<T>where T:new(){//也就是说这个T是某个类或结构体（值类型）的无参公共public构造函数非抽象类
+
+		public T value;
+		public void TestFun<K>(K k)where K:new(){
+		
+		}
+`}`
+`Test<Test1>t = new Test<Test1>()`
+**类约束**
+`class Test1{
+
+`}`
+`class Test2:Test1{
+
+`}`
+`class Test<T>where T:Test1{
+
+
+		public T value;
+		public void TestFun<K>(K k)where K:Test1{
+		
+		}
+`}`
+`Test<Test1> t = new Test<Test1>();`
+`Test<Test2> t1 = new Test<Test2>();`
+**接口约束**//接口的派生类型或接口本身，或接口的派生（如果是接口，对于其内部的value没有办法new，可以用==里氏替换原则==，装它的子类）
+`interface IFly{
+
+`}`
+`class Test:IFly{
+
+`}`
+`class Test4<IFly>{
+
+		public T value;
+		public void TestFun<K>(K k)where K:IFly{
+		
+		}
+`}`
+`Test4<Test> t = new Test4<Test>();`
+**另一个泛型约束**
+`class Test4<T,U>where T:U{//即要不 T等于U，或是U的派生
+
+
+		public T value;
+		public void TestFun<K>(K k)where K:U{
+		
+		}
+`}`
+`Test4<Test,IFly> = new Test4<Test,IFly>();`
+#### 约束的组合使用
+`class Test5<T>where T：class,new(){//就是T必须是一个引用类型且有一个无参构造函数，可以自己试试==new必须写在最后==
+
+`}`
+#### 多个泛型有约束
+`class Test6<T,U>where T:class,where U:new() where K:struct{//一个泛型有多个约束加逗号，多个约束写where
+
+}
